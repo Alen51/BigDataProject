@@ -38,7 +38,7 @@ with open('Bank_Churn.csv', mode ='r')as file:
   print("Stats form MongoDb\n:")
 
 #Connecting to Microsoft SQL Server
-  #connection = pyodbc.connect(connection_string_MicrosoftSQL)
+  connection = pyodbc.connect(connection_string_MicrosoftSQL)
   
 # Create a new client and connect to the server
   client = MongoClient('mongodb://localhost:27017/')
@@ -48,41 +48,42 @@ with open('Bank_Churn.csv', mode ='r')as file:
   collection=db['Clients']
   
 #Inserting everything into the collection
-  #start = datetime.now()
-  #for lines in csvFile:
-   #  result = collection.insert_one(lines)
-    # print(f"Inserted document with ID: {result.inserted_id}")
-     #end = datetime.now()
-  #elapsed_time = end - start
-  #print(f"Elapsed time for inserting everything into the collection: {elapsed_time}")
+  start = datetime.now()
+  for lines in csvFile:
+     result = collection.insert_one(lines)
+     print(f"Inserted document with ID: {result.inserted_id}")
+     #break
+  end = datetime.now()
+  elapsed_time = end - start
+  print(f"Elapsed time for inserting everything into the collection: {elapsed_time}")
   
 #Finding one from the collection
-  #start = datetime.now()
-  #result = collection.findOne({'Surname': 'Pye'});
-  #end = datetime.now()
-  #elapsed_time = end - start
-  #print(f"Elapsed time for Finding one from collection: {elapsed_time}")
+  start = datetime.now()
+  result = collection.find_one({'Surname': 'Pye'});
+  end = datetime.now()
+  elapsed_time = end - start
+  print(f"Elapsed time for Finding one from collection: {elapsed_time}")
 
 #Deleting one from the collection
-  #start = datetime.now()
-  #result = collection.deleteOne({'Surname': 'Pye'});
-  #end = datetime.now()
-  #elapsed_time = end - start
-  #print(f"Elapsed time for deleting one from collection: {elapsed_time}")
+  start = datetime.now()
+  result = collection.delete_one({'Surname': 'Pye'});
+  end = datetime.now()
+  elapsed_time = end - start
+  print(f"Elapsed time for deleting one from collection: {elapsed_time}")
 
 #Retriving everything from the collection
-  #start = datetime.now()
-  #documents = collection.find()
-  #end = datetime.now()
-  #elapsed_time = end - start
-  #print(f"Elapsed time for Retriving everything from collection: {elapsed_time}")
+  start = datetime.now()
+  documents = collection.find({})
+  end = datetime.now()
+  elapsed_time = end - start
+  print(f"Elapsed time for Retriving everything from collection: {elapsed_time}")
 
 #Deleting everything from the collection
-  #start = datetime.now()
-  #result = collection.delete_many({}) deleteng everything from the collection
-  #end = datetime.now()
-  #elapsed_time = end - start
-  #print(f"Elapsed time for deleting everything from collection: {elapsed_time}")
+  start = datetime.now()
+  result = collection.delete_many({}) 
+  end = datetime.now()
+  elapsed_time = end - start
+  print(f"Elapsed time for deleting everything from collection: {elapsed_time}")
 
   client.close()
   #csv_reader = csv.reader(file)
@@ -92,9 +93,9 @@ with open('Bank_Churn.csv', mode ='r')as file:
     
     with connection.cursor() as cursor:
       #connection test
-      result = cursor.execute("SELECT * FROM test_table_1")
-      for row in result:
-        print(row)
+      #result = cursor.execute("SELECT * FROM test_table_1")
+      #for row in result:
+      #  print(row)
 
       
       insert_query ="""
@@ -102,7 +103,8 @@ with open('Bank_Churn.csv', mode ='r')as file:
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       """
 
-      
+      """
+
 #Inserting everything into database table
       start = datetime.now()
       for lines in csvFile:
@@ -127,7 +129,7 @@ with open('Bank_Churn.csv', mode ='r')as file:
       elapsed_time = end - start
       print(f"Elapsed time for inserting everything into database: {elapsed_time}")
       time.sleep(1)
-      """
+     
 #Finding one from the database
       start = datetime.now()
       result = cursor.execute("SELECT * FROM datatable where surname = 'Hargrave'")
