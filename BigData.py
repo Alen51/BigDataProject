@@ -23,7 +23,7 @@ connection_string_MicrosoftSQL = (
 )
   
 #connection string for MongoDb database
-uri_MongoDb = "mongodb+srv://aleneminovic:aleneminovic5@alen.layjvej.mongodb.net/?retryWrites=true&w=majority&appName=alen"
+#uri_MongoDb = "mongodb+srv://aleneminovic:aleneminovic5@alen.layjvej.mongodb.net/?retryWrites=true&w=majority&appName=alen"
 
 
 
@@ -38,14 +38,14 @@ with open('Bank_Churn.csv', mode ='r')as file:
   print("Stats form MongoDb\n:")
 
 #Connecting to Microsoft SQL Server
-  connection = pyodbc.connect(connection_string_MicrosoftSQL)
+  #connection = pyodbc.connect(connection_string_MicrosoftSQL)
   
 # Create a new client and connect to the server
-  client = MongoClient(uri_MongoDb, server_api=ServerApi('1'))
+  client = MongoClient('mongodb://localhost:27017/')
 
 # Send a ping to confirm a successful connection
-  db=client['AlenBigData']
-  collection=db['Korisnici']
+  db=client['BigData']
+  collection=db['Clients']
   
 #Inserting everything into the collection
   #start = datetime.now()
