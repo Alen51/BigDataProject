@@ -48,43 +48,49 @@ with open('Bank_Churn.csv', mode ='r')as file:
   collection=db['Clients']
   
 #Inserting everything into the collection
-  start = datetime.now()
+  start_insert_everything = datetime.now()
   for lines in csvFile:
      result = collection.insert_one(lines)
      print(f"Inserted document with ID: {result.inserted_id}")
      #break
-  end = datetime.now()
-  elapsed_time = end - start
-  print(f"Elapsed time for inserting everything into the collection: {elapsed_time}")
-  
+  end_insert_everything = datetime.now()
+  elapsed_time_insert_everything_MDb = end_insert_everything - start_insert_everything
+ 
 #Finding one from the collection
   start = datetime.now()
-  result = collection.find_one({'Surname': 'Pye'});
+  result = collection.find_one({'Surname': 'Pye'})
   end = datetime.now()
-  elapsed_time = end - start
-  print(f"Elapsed time for Finding one from collection: {elapsed_time}")
-
+  #for row in result:
+  #  print(row)
+  elapsed_time_find_one_Mdb = end - start
+  
+  
 #Deleting one from the collection
   start = datetime.now()
-  result = collection.delete_one({'Surname': 'Pye'});
+  result = collection.delete_one({'Surname': 'Pye'})
   end = datetime.now()
-  elapsed_time = end - start
-  print(f"Elapsed time for deleting one from collection: {elapsed_time}")
-
+  print(result)
+  elapsed_time_delete_one_MDb = end - start
+   
+ 
 #Retriving everything from the collection
   start = datetime.now()
-  documents = collection.find({})
+  result = collection.find()
+  
   end = datetime.now()
-  elapsed_time = end - start
-  print(f"Elapsed time for Retriving everything from collection: {elapsed_time}")
+  #for row in result:
+  #  print(row)
+  elapsed_time_retrive_everything_MDb = end - start
+  
 
 #Deleting everything from the collection
   start = datetime.now()
   result = collection.delete_many({}) 
+  
   end = datetime.now()
-  elapsed_time = end - start
-  print(f"Elapsed time for deleting everything from collection: {elapsed_time}")
-
+  print(result)
+  elapsed_time_delete_everything_MDb = end - start
+  
   client.close()
   #csv_reader = csv.reader(file)
   print("Data for Microsoft SQL Server:\n")
@@ -103,8 +109,8 @@ with open('Bank_Churn.csv', mode ='r')as file:
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       """
 
-      """
-
+      
+      
 #Inserting everything into database table
       start = datetime.now()
       for lines in csvFile:
@@ -124,21 +130,21 @@ with open('Bank_Churn.csv', mode ='r')as file:
                                                 lines['EstimatedSalary'],
                                                 lines['Exited'])
         connection.commit()
-       
+        break
       end = datetime.now()
-      elapsed_time = end - start
-      print(f"Elapsed time for inserting everything into database: {elapsed_time}")
+      elapsed_time_insert_everything_MSQL = end - start
+      
       time.sleep(1)
-     
+      
 #Finding one from the database
       start = datetime.now()
-      result = cursor.execute("SELECT * FROM datatable where surname = 'Hargrave'")
+      result = cursor.execute("SELECT * FROM datatable where surname = 'Pye'")
       
       end = datetime.now()
-      elapsed_time = end - start
+      elapsed_time_find_one_MSQL = end - start
       for row in result:
         print(row)
-      print(f"Elapsed time for Finding one from the database: {elapsed_time}")
+     
       time.sleep(1)
 
 #Retriving everything from the database
@@ -149,17 +155,17 @@ with open('Bank_Churn.csv', mode ='r')as file:
       for row in result:
         print(row)
       
-      elapsed_time = end - start
-      print(f"Elapsed time for Retriving everything from the database: {elapsed_time}")
+      elapsed_time_retrive_everything_MSQL = end - start
+      
       time.sleep(1)   
 
 #Deleting one from the database
       start = datetime.now()
-      result = cursor.execute("DELETE  FROM datatable where surname = 'Hargrave'")
+      result = cursor.execute("DELETE  FROM datatable where surname = 'Pye'")
       connection.commit()
       end = datetime.now()
-      elapsed_time = end - start
-      print(f"Elapsed time for Deleting one from the database: {elapsed_time}")
+      elapsed_time_delete_one_MSQL = end - start
+      
       time.sleep(1)   
 
 #Deleting everything from the database
@@ -168,9 +174,23 @@ with open('Bank_Churn.csv', mode ='r')as file:
      
       connection.commit()
       end = datetime.now()
-      elapsed_time = end - start
-      print(f"Elapsed time for Deleting everything from the database: {elapsed_time}")
-      """
+      elapsed_time_delete_everything_MSQL = end - start
+      
+      
+      print("////////////////////////////////////////////////////////////////////////////////////////////////")
+      print("Stats for MongoDb:")
+      print(f"Elapsed time for inserting everything into the collection: {elapsed_time_insert_everything_MDb}")
+      print(f"Elapsed time for Finding one from collection: {elapsed_time_find_one_Mdb}")
+      print(f"Elapsed time for deleting one from collection: {elapsed_time_delete_one_MDb}")
+      print(f"Elapsed time for Retriving everything from collection: {elapsed_time_retrive_everything_MDb}")
+      print(f"Elapsed time for deleting everything from collection: {elapsed_time_delete_everything_MDb}")
+      print("////////////////////////////////////////////////////////////////////////////////////////////////")
+      print("Stats for Microsoft SQL Server")
+      print(f"Elapsed time for inserting everything into the collection: {elapsed_time_insert_everything_MSQL}")     
+      print(f"Elapsed time for Finding one from collection: {elapsed_time_find_one_MSQL}")
+      print(f"Elapsed time for deleting one from collection: {elapsed_time_delete_one_MSQL}")
+      print(f"Elapsed time for Retriving everything from collection: {elapsed_time_retrive_everything_MSQL}")
+      print(f"Elapsed time for deleting everything from collection: {elapsed_time_delete_everything_MSQL}")
   
   except Exception as e:
       print(f"Connection failed: {e}")
